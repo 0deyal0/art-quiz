@@ -29,7 +29,7 @@
     }
 
     &__verdict {
-        @include adaptiv-type(font-size, 8rem, 6rem, 4rem, 4rem);
+        @include adaptiv-type(font-size, 8rem, 6rem, 3rem);
 
         text-align: center;
     }
@@ -67,9 +67,12 @@
     }
 
     &__button {
+        display: flex;
+        align-items: center;
         text-decoration: none;
-        padding: 1rem 2rem;
-        font-size: 2rem;
+        padding: 1rem 1rem;
+        font-size: 1rem;
+        text-align: center;
         color: white;
         background-color: rgba(0, 0, 0, 0.9);
 

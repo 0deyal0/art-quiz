@@ -12,7 +12,7 @@ export default class QuizeResult {
     }).length / currentQuizeRes.length * 100;
 
     // eslint-disable-next-line no-nested-ternary
-    const verdict = successPercent < 50 ? 'Game over' : successPercent < 70 ? 'Not bad!' : 'Great!';
+    const verdict = successPercent < 50 ? 'Провалено' : successPercent < 70 ? 'Неплохо!' : 'Отлично!';
 
     const cupElement = document.createElement('div');
     cupElement.classList.add('quize-result-modal__cup');
@@ -45,16 +45,18 @@ export default class QuizeResult {
     const homeButtonElem = document.createElement('a');
     homeButtonElem.classList.add('quize-result-modal__button');
     homeButtonElem.href = '/';
-    homeButtonElem.innerText = 'Home';
-    homeButtonElem.addEventListener('click', () => modalOverlayElem.remove());
+    homeButtonElem.innerText = 'Завершить';
+    buttonsElem.append(homeButtonElem);
 
-    const tryAgainButtonElem = document.createElement('a');
-    tryAgainButtonElem.classList.add('quize-result-modal__button');
-    tryAgainButtonElem.href = window.location;
-    tryAgainButtonElem.innerText = 'Try again';
-    tryAgainButtonElem.addEventListener('click', () => modalOverlayElem.remove());
+    if (successPercent < 50) {
+      const tryAgainButtonElem = document.createElement('a');
+      tryAgainButtonElem.classList.add('quize-result-modal__button');
+      tryAgainButtonElem.href = window.location;
+      tryAgainButtonElem.innerText = 'Попробовать еще раз';
+      tryAgainButtonElem.addEventListener('click', () => modalOverlayElem.remove());
 
-    buttonsElem.append(homeButtonElem, tryAgainButtonElem);
+      buttonsElem.append(tryAgainButtonElem);
+    }
 
     modalElem.append(scoreElem, cupElement, verdictElem, buttonsElem);
     modalOverlayElem.append(modalElem);

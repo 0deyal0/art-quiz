@@ -2,7 +2,7 @@
 
 .paintsquize {
     display: grid;
-    grid-template-rows: min-content auto min-content min-content min-content;
+    grid-template-rows: min-content auto min-content min-content;
     grid-template-columns: 100%;
     justify-items: center;
     gap: 2rem;
@@ -158,5 +158,6 @@
     &__question {
         font-size: 2rem;
         text-align: center;
+        padding: 0 2rem;
     }
 }

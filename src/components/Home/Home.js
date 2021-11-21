@@ -1,3 +1,6 @@
+import DataStorage from '../../utils/DataStorage';
+import ImagesPreloader from '../../utils/ImagesPreloader';
+
 import './mainscreen.scss';
 
 export default class Home {
@@ -5,24 +8,25 @@ export default class Home {
     this.quizes = quizes;
   }
 
-  render() {
+  async render() {
     // eslint-disable-next-line no-unused-vars
-    const cards = Object.entries(this.quizes).map(([key, value], index) => {
+    const cards = await Promise.all(Object.entries(this.quizes).map(async ([key, value], index) => {
       const cardElem = document.createElement('a');
       cardElem.classList.add('mainscreen-category__card');
 
       const cardImageElem = document.createElement('div');
-      cardImageElem.style.backgroundImage = `url('https://raw.githubusercontent.com/0deyal0/art-quiz/images/images/paintings/${index}.jpg')`;
+      const backgroundImg = await ImagesPreloader.loadImage(DataStorage.getFullImgUrlById(index));
+      cardImageElem.style.backgroundImage = `url('${backgroundImg.src}')`;
       cardImageElem.classList.add('mainscreen-category__card--image');
 
       const cardCaptionElem = document.createElement('p');
       let quizeName = '';
 
       if (key === 'paintsQuize') {
-        quizeName = 'Paints quize';
+        quizeName = 'Викторины с картинами';
         cardElem.href = '#/paintsquize';
       } else if (key === 'artistQuize') {
-        quizeName = 'Artist quize';
+        quizeName = 'Викторины с авторами';
         cardElem.href = '#/artistquize';
       }
       cardCaptionElem.innerText = quizeName;
@@ -31,12 +35,8 @@ export default class Home {
       cardElem.appendChild(cardImageElem);
       cardElem.appendChild(cardCaptionElem);
 
-      // cardElem.addEventListener('click', () => {
-      //   new Categories(quizeName, key, value).render();
-      // });
-
       return cardElem;
-    });
+    }));
 
     const cardsElem = document.createElement('div');
     cardsElem.classList.add('mainscreen-category__cards');

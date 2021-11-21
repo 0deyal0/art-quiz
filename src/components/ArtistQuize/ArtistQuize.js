@@ -1,6 +1,9 @@
 import DataStorage from '../../utils/DataStorage';
+import Loader from '../Loader/Loader';
 import QuestionResult from '../QuestionResult/QuestionResult';
 import QuizeResult from '../QuizeResult/QuizeResult';
+
+import ImagesPreloader from '../../utils/ImagesPreloader';
 
 import './artistquize.scss';
 
@@ -10,7 +13,7 @@ export default class ArtistQuize {
     this.quetions = quetions;
   }
 
-  render(questionIndex = 0) {
+  async render(questionIndex = 0) {
     if (questionIndex === 0) {
       DataStorage.initCurResult();
     }
@@ -29,8 +32,8 @@ export default class ArtistQuize {
 
     const imageElem = document.createElement('div');
     imageElem.classList.add('artistquize__image');
-    imageElem.style.backgroundImage = `url('${currentQuestion.imgFullSrc}')`;
-    console.log(currentQuestion);
+    const backgroundImg = await ImagesPreloader.loadImage(currentQuestion.imgFullSrc);
+    imageElem.style.backgroundImage = `url('${backgroundImg.src}')`;
     imageContainer.append(imageElem);
 
     const progressContainer = document.createElement('div');
@@ -55,7 +58,7 @@ export default class ArtistQuize {
 
     const questionElem = document.createElement('div');
     questionElem.classList.add('artistquize__question');
-    questionElem.innerText = 'Who is the author of the picture?';
+    questionElem.innerText = 'Кто является автором этой картины?';
 
     const answersElem = document.createElement('div');
     answersElem.classList.add('artistquize__answers');
@@ -89,7 +92,7 @@ export default class ArtistQuize {
     const nextButtonElem = document.createElement('button');
     nextButtonElem.classList.add('next-button');
     nextButtonElem.id = 'artistquize__next-button';
-    nextButtonElem.innerText = 'Next';
+    nextButtonElem.innerText = 'Далее';
     nextButtonElem.disabled = true;
     nextButtonElem.addEventListener('click', () => {
       const { value } = document.querySelector(`input[name="${radioButtonsName}"]:checked`);
@@ -108,7 +111,12 @@ export default class ArtistQuize {
 
       if (questionIndex < this.quetions.length - 1) {
         // eslint-disable-next-line no-extra-bind
-        questionRes.render((() => { this.render(questionIndex + 1); }).bind(this));
+        questionRes.render((async () => {
+          const loader = new Loader();
+          await loader.render();
+          await this.render(questionIndex + 1);
+          await loader.remove();
+        }));
       } else {
         const resultsData = DataStorage.loadResults();
 
@@ -126,7 +134,9 @@ export default class ArtistQuize {
 
         DataStorage.saveResults(resultsData);
 
-        questionRes.render((() => { new QuizeResult().render(); }));
+        questionRes.render((async () => {
+          await new QuizeResult().render();
+        }));
       }
     });
 

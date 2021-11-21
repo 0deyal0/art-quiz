@@ -1,4 +1,5 @@
 import DataStorage from '../../utils/DataStorage';
+import ImagesPreloader from '../../utils/ImagesPreloader';
 
 import './categories.scss';
 
@@ -9,7 +10,7 @@ export default class Categories {
     this.quize = quize;
   }
 
-  render() {
+  async render() {
     const mainElem = document.getElementById('main');
 
     const categoriesElem = document.createElement('section');
@@ -17,7 +18,7 @@ export default class Categories {
 
     const categoriesNameElem = document.createElement('h1');
     categoriesNameElem.classList.add('categories__name');
-    categoriesNameElem.innerText = `${this.quizeName} categories`;
+    categoriesNameElem.innerText = `${this.quizeName}`;
 
     let categoriesElems = [];
 
@@ -25,11 +26,12 @@ export default class Categories {
       const artistQuizeResults = DataStorage.loadResults().artistQuize;
 
       // eslint-disable-next-line array-callback-return
-      categoriesElems = this.quize.map((questions, index) => {
+      categoriesElems = await Promise.all(this.quize.map(async (questions, index) => {
         const categoryElem = document.createElement('a');
         categoryElem.classList.add('category');
         categoryElem.href = `#/artistquize/${index}`;
-        categoryElem.style.setProperty('--background', `url('${questions[0].imgFullSrc}')`);
+        const backgroundImg = await ImagesPreloader.loadImage(questions[0].imgFullSrc);
+        categoryElem.style.setProperty('--background', `url('${backgroundImg.src}')`);
         const categoryContentElem = document.createElement('div');
         categoryContentElem.classList.add('category__content');
 
@@ -60,15 +62,16 @@ export default class Categories {
         categoryElem.appendChild(categoryContentElem);
 
         return categoryElem;
-      });
+      }));
     } else if (this.quizeType === 'paintsQuize') {
       const paintsQuizeResults = DataStorage.loadResults().paintsQuize;
 
-      categoriesElems = this.quize.map((questions, index) => {
+      categoriesElems = await Promise.all(this.quize.map(async (questions, index) => {
         const categoryElem = document.createElement('a');
         categoryElem.classList.add('category');
         categoryElem.href = `#/paintsquize/${index}`;
-        categoryElem.style.setProperty('--background', `url('${questions[0].answers[0].imgFullSrc}')`);
+        const backgroundImg = await ImagesPreloader.loadImage(questions[0].answers[0].imgFullSrc);
+        categoryElem.style.setProperty('--background', `url('${backgroundImg.src}')`);
         const categoryContentElem = document.createElement('div');
         categoryContentElem.classList.add('category__content');
 
@@ -99,7 +102,7 @@ export default class Categories {
         categoryElem.appendChild(categoryContentElem);
 
         return categoryElem;
-      });
+      }));
     }
 
     categoriesElem.append(...categoriesElems);

@@ -9,10 +9,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    // display: grid;
-    // grid-template-rows: min-content auto min-content min-content min-content;
     gap: 3rem;
-    // place-items: center;
     background-color: #fff;
     box-shadow: 0rem 0rem 0.1rem 0rem rgba(0, 0, 0, 0.04);
 
@@ -42,10 +39,6 @@
             gap: 1.5rem;
             height: 100%;
             width: 100%;
-            // background-size: contain;
-            // background-position-x: center;
-            // background-position-y: center;
-            // background-repeat: no-repeat;
         }
         &--desc {
             @include adaptiv-type(font-size, 2rem, 2rem, 1.5rem);
@@ -55,9 +48,9 @@
     }
 
     &__verdict {
-        font-size: 4rem;
+        font-size: 2rem;
         font-weight: 600;
-        letter-spacing: 0.2rem;
+        letter-spacing: 0.1rem;
 
         &--right {
             color: green;

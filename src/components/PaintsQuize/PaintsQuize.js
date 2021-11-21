@@ -1,6 +1,9 @@
 import DataStorage from '../../utils/DataStorage';
 import QuestionResult from '../QuestionResult/QuestionResult';
 import QuizeResult from '../QuizeResult/QuizeResult';
+import Loader from '../Loader/Loader';
+
+import ImagesPreloader from '../../utils/ImagesPreloader';
 
 import './paintsquize.scss';
 
@@ -10,7 +13,7 @@ export default class PaintsQuize {
     this.quetions = quetions;
   }
 
-  render(questionIndex = 0) {
+  async render(questionIndex = 0) {
     if (questionIndex === 0) {
       DataStorage.initCurResult();
     }
@@ -26,7 +29,8 @@ export default class PaintsQuize {
     answersElem.classList.add('paintsquize__answers');
 
     const radioButtonsName = 'paintsquize__answer';
-    const answersElems = currentQuestion.answers.map((answer, index) => {
+
+    const answersElems = await Promise.all(currentQuestion.answers.map(async (answer, index) => {
       const labelElem = document.createElement('label');
       labelElem.classList.add('paintsquize__answer');
 
@@ -42,18 +46,19 @@ export default class PaintsQuize {
 
       const imageElem = document.createElement('div');
       imageElem.classList.add('paintsquize__image');
-      imageElem.style.backgroundImage = `url('${answer.imgFullSrc}')`;
+      const backgroundImg = await ImagesPreloader.loadImage(answer.imgFullSrc);
+      imageElem.style.backgroundImage = `url('${backgroundImg.src}')`;
 
       labelElem.append(inputElem, imageElem);
 
       return labelElem;
-    });
+    }));
 
     answersElem.append(...answersElems);
 
     const questionElem = document.createElement('div');
     questionElem.classList.add('paintsquize__question');
-    questionElem.innerText = `Which is the ${currentQuestion.author} picture?`;
+    questionElem.innerText = `Автором какой картины является ${currentQuestion.author}?`;
 
     const nextContainerElem = document.createElement('div');
     nextContainerElem.classList.add('paintsquize__next-container');
@@ -82,7 +87,7 @@ export default class PaintsQuize {
     const nextButtonElem = document.createElement('button');
     nextButtonElem.classList.add('next-button');
     nextButtonElem.id = 'paintsquize__next-button';
-    nextButtonElem.innerText = 'Next';
+    nextButtonElem.innerText = 'Далее';
     nextButtonElem.disabled = true;
     nextButtonElem.addEventListener('click', () => {
       const { value } = document.querySelector(`input[name="${radioButtonsName}"]:checked`);
@@ -99,8 +104,13 @@ export default class PaintsQuize {
       );
 
       if (questionIndex < this.quetions.length - 1) {
-        // eslint-disable-next-line no-extra-bind
-        paintsQuestionRes.render((() => { this.render(questionIndex + 1); }).bind(this));
+        paintsQuestionRes.render((async () => {
+          const loader = new Loader();
+          await loader.render();
+          await this.render(questionIndex + 1);
+          await loader.remove();
+          // eslint-disable-next-line no-extra-bind
+        }).bind(this));
       } else {
         const resultsData = DataStorage.loadResults();
 
@@ -118,7 +128,7 @@ export default class PaintsQuize {
 
         DataStorage.saveResults(resultsData);
 
-        paintsQuestionRes.render((() => { new QuizeResult().render(); }));
+        paintsQuestionRes.render((async () => { await new QuizeResult().render(); }));
       }
     });
 

@@ -8,9 +8,6 @@ export default class QuestionResult {
   }
 
   render(nextCallback) {
-    // const modalOverlayElem = document.querySelector('result-modal__overlay');
-    // const resultModalElem = document.querySelector('result-modal');
-
     const modalOverlayElem = document.createElement('div');
     modalOverlayElem.classList.add('result-modal__overlay');
 
@@ -21,7 +18,7 @@ export default class QuestionResult {
     const verdictElem = document.createElement('p');
     verdictElem.classList.add('result-modal__verdict');
     verdictElem.classList.add(this.isRight ? 'result-modal__verdict--right' : 'result-modal__verdict--wrong');
-    verdictElem.innerText = this.isRight ? 'Right!' : 'Wrong!';
+    verdictElem.innerText = this.isRight ? 'Правильно!' : 'Неправильно!';
 
     const imgContainer = document.createElement('div');
     imgContainer.classList.add('result-modal__image-container');
@@ -39,7 +36,7 @@ export default class QuestionResult {
 
     const nextButtonElem = document.createElement('button');
     nextButtonElem.classList.add('next-button', 'result-modal__next-button');
-    nextButtonElem.innerText = 'Next';
+    nextButtonElem.innerText = 'Далее';
     nextButtonElem.addEventListener('click', () => {
       modalOverlayElem.remove();
       nextCallback();

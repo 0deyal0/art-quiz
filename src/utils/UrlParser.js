@@ -2,8 +2,6 @@
 export const UrlParser = {
   parseRequestURL: () => {
     // eslint-disable-next-line no-restricted-globals
-    console.log(location.hash);
-    // eslint-disable-next-line no-restricted-globals
     const url = location.hash.slice(1).toLowerCase() || '/';
 
     const r = url.split('/');
