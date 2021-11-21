@@ -1,0 +1,74 @@
+@import "../../scss/variables.scss";
+
+.result-modal {
+    position: relative;
+    padding: 3rem;
+    max-width: 1400px;
+    width: 90%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // display: grid;
+    // grid-template-rows: min-content auto min-content min-content min-content;
+    gap: 3rem;
+    // place-items: center;
+    background-color: #fff;
+    box-shadow: 0rem 0rem 0.1rem 0rem rgba(0, 0, 0, 0.04);
+
+    &__overlay {
+        z-index: 999;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        display: grid;
+        place-items: center;
+        background-color: rgba(0, 0, 0, 0.4);
+        // visibility: hidden;
+    }
+
+    &__image {
+        height: 100%;
+        width: 100%;
+        background-size: cover;
+        background-position-x: center;
+        background-position-y: center;
+        background-repeat: no-repeat;
+
+        &-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: 100%;
+            width: 100%;
+            // background-size: contain;
+            // background-position-x: center;
+            // background-position-y: center;
+            // background-repeat: no-repeat;
+        }
+        &--desc {
+            @include adaptiv-type(font-size, 2rem, 2rem, 1.5rem);
+            text-align: center;
+            // font-size: 2rem;
+        }
+    }
+
+    &__verdict {
+        font-size: 4rem;
+        font-weight: 600;
+        letter-spacing: 0.2rem;
+
+        &--right {
+            color: green;
+        }
+
+        &--wrong {
+            color: darkred;
+        }
+    }
+
+    &__next-button {
+        flex-shrink: 0;
+    }
+}

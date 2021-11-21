@@ -1,0 +1,96 @@
+@import "../../scss/variables.scss";
+
+.categories {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    align-items: center;
+
+    &__name {
+        align-self: center;
+        padding-bottom: 0.5rem;
+    }
+}
+
+.category {
+    min-height: 10rem;
+    max-width: 25rem;
+    width: 100%;
+    position: relative;
+    z-index: 0;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &::before {
+        top: 0;
+        left: 0;
+        position: absolute;
+        z-index: -1;
+        content: '';
+        background-image: var(--background);
+        background-size: cover;
+        background-position-x: center;
+        background-position-y: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    &>.category__content {
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 2rem;
+        font-size: 2.5rem;
+        width: 100%;
+        height: 100%;
+        color: white;
+        background-color: rgba($color: black, $alpha: 0.4);
+        // backdrop-filter: blur(1px) grayscale(1);
+        transition: background-color 0.5s;
+
+
+        &--success {
+            background-color: rgba($color: #005200, $alpha: 0.4);
+        }
+
+        &--gold {
+            background-color: rgba($color: #FFD700, $alpha: 0.4);
+        }
+
+        &--silver {
+            background-color: rgba($color: #C0C0C0  , $alpha: 0.4);
+        }
+
+        &--bad {
+            background-color: rgba($color: darkred, $alpha: 0.4);
+        }
+    }
+
+    &:hover>.category__content {
+        background-color: rgba($color: black, $alpha: 0.3);
+
+        &--success {
+            background-color: rgba($color: #005200, $alpha: 0.3);
+        }
+
+        &--gold {
+            background-color: rgba($color: #FFD700, $alpha: 0.3);
+        }
+
+        &--silver {
+            background-color: rgba($color: #C0C0C0, $alpha: 0.4);
+        }
+
+        &--bad {
+            background-color: rgba($color: darkred, $alpha: 0.3);
+        }
+    }
+
+    &__result {
+        font-size: 1.5rem;
+    }
+}

@@ -1,0 +1,153 @@
+$extraLargeScreenWidth: 1920px;
+$largeScreenWidth: 1024px;
+$customLargeWidth: 1023px;
+$mediumScreenWidth: 768px;
+$moreSmallScreenWidth: 421px;
+$smallScreenWidth: 420px;
+
+$steelGray60: #edeef0;
+$green350:#4bb34b;
+
+$backgroundColor: $steelGray60;
+
+
+@function strip-unit($value) {
+  @return $value / ($value * 0 + 1);
+}
+
+@mixin adaptiv($prop, $minFontSize, $maxFontSize, $maxWidth, $minWidth) {
+  #{$prop}: calc(#{$minFontSize} + #{strip-unit($maxFontSize - $minFontSize)} * ((100vw - #{$minWidth}) / #{strip-unit($maxWidth - $minWidth)}));
+}
+
+@mixin fluid-type($prop, $xlSize, $lSize, $mSize:null, $sSize:null) {
+  #{$prop}: $xlSize;
+
+  @media (min-width: $largeScreenWidth) and (max-width: $extraLargeScreenWidth) {
+    @include adaptiv($prop,
+      $lSize,
+      $xlSize,
+      $extraLargeScreenWidth,
+      $largeScreenWidth);
+  }
+
+  @if ($mSize) {
+    @media (min-width: $mediumScreenWidth) and (max-width: $largeScreenWidth) {
+      @include adaptiv($prop,
+        $mSize,
+        $lSize,
+        $largeScreenWidth,
+        $mediumScreenWidth);
+    }
+  }
+
+  @else {
+    @media (max-width: $largeScreenWidth) {
+      #{$prop}: $lSize;
+    }
+  }
+
+  @if ($sSize) {
+    @media (min-width: $smallScreenWidth) and (max-width: $mediumScreenWidth) {
+      @include adaptiv($prop,
+        $sSize,
+        $mSize,
+        $mediumScreenWidth,
+        $smallScreenWidth);
+    }
+
+    @media (max-width: $smallScreenWidth) {
+      #{$prop}: $sSize;
+    }
+  }
+
+  @else {
+    @media (max-width: $mediumScreenWidth) {
+      #{$prop}: $mSize;
+    }
+  }
+}
+
+@mixin adaptiv-type($prop, $xlValue, $lValue, $mValue:null, $sValue:null) {
+  #{$prop}: $xlValue;
+
+  @if ($mValue) {
+    @media (min-width: $mediumScreenWidth) and (max-width: $largeScreenWidth) {
+      #{$prop}: $lValue;
+    }
+  }
+
+  @else {
+    @media (max-width: $largeScreenWidth) {
+      #{$prop}: $lValue;
+    }
+  }
+
+  @if ($sValue) {
+    @media (min-width: $smallScreenWidth) and (max-width: $mediumScreenWidth) {
+      #{$prop}: $mValue;
+    }
+
+    @media (max-width: $smallScreenWidth) {
+      #{$prop}: $sValue;
+    }
+  }
+
+  @else {
+    @media (max-width: $mediumScreenWidth) {
+      #{$prop}: $mValue;
+    }
+  }
+}
+
+@mixin very-fluid-type($prop, $xlSize, $lSize, $mSize:null, $sSize:null) {
+  #{$prop}: $xlSize;
+
+  @media (min-width: $largeScreenWidth) and (max-width: $extraLargeScreenWidth) {
+    @include adaptiv($prop,
+      $lSize,
+      $xlSize,
+      $extraLargeScreenWidth,
+      $largeScreenWidth);
+  }
+
+  @if ($mSize) {
+    @media (min-width: $mediumScreenWidth) and (max-width: $largeScreenWidth) {
+      @include adaptiv($prop,
+        $mSize,
+        $lSize,
+        $largeScreenWidth,
+        $mediumScreenWidth);
+    }
+  }
+
+  @else {
+    @media (max-width: $largeScreenWidth) {
+      #{$prop}: $lSize;
+    }
+  }
+
+  @if ($sSize) {
+    @media (min-width: $smallScreenWidth) and (max-width: $mediumScreenWidth) {
+      @include adaptiv($prop,
+        $sSize,
+        $mSize,
+        $mediumScreenWidth,
+        $smallScreenWidth);
+    }
+
+    @media (min-width: 0) and (max-width: $smallScreenWidth) {
+      @include adaptiv($prop,
+        0px,
+        $sSize,
+        $smallScreenWidth,
+        0px);
+    }
+
+  }
+
+  @else {
+    @media (max-width: $mediumScreenWidth) {
+      #{$prop}: $mSize;
+    }
+  }
+}

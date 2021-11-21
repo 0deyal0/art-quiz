@@ -1,0 +1,162 @@
+@import "../../scss/variables.scss";
+
+.paintsquize {
+    display: grid;
+    grid-template-rows: min-content auto min-content min-content min-content;
+    grid-template-columns: 100%;
+    justify-items: center;
+    gap: 2rem;
+    padding: 0.5rem 0;
+    flex: 1;
+
+    &__answers {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    &__answer {
+        transition: 150ms;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &>input {
+            display: none;
+        }
+
+        /* CHECKED STYLES */
+        &>input[type=radio]:checked+.paintsquize__image {
+            position: relative;
+
+            &::after {
+                background: url('../../assets/svg/icons8-ok-yellow.svg') no-repeat center center;
+                background-size: 48px 48px;
+                bottom: 0;
+                content: '';
+                display: block;
+                height: 4rem;
+                // left: 0;
+                opacity: 0.8;
+                position: absolute;
+                margin: 0 auto;
+                right: 0;
+                width: 4rem;
+                z-index: 2;
+            }
+        }
+
+        &--wrong {
+
+            &>input+.picturesquize__image,
+            &>input[type=radio]:checked+.picturesquize__image {
+                position: relative;
+
+                &::after {
+                    background: url('../../assets/svg/cross-circular.svg') no-repeat center center;
+                    background-size: 48px 48px;
+                    bottom: 0;
+                    content: '';
+                    display: block;
+                    height: 4rem;
+                    opacity: 0.8;
+                    position: absolute;
+                    margin: 0 auto;
+                    right: 0;
+                    width: 4rem;
+                    z-index: 2;
+                }
+            }
+        }
+
+        &--right {
+
+            &>input+.picturesquize__image,
+            &>input[type=radio]:checked+.picturesquize__image {
+                position: relative;
+
+                &::after {
+                    background: url('../../assets/svg/icons8-ok.svg') no-repeat center center;
+                    background-size: 48px 48px;
+                    bottom: 0;
+                    content: '';
+                    display: block;
+                    height: 4rem;
+                    // left: 0;
+                    opacity: 0.8;
+                    position: absolute;
+                    margin: 0 auto;
+                    right: 0;
+                    width: 4rem;
+                    z-index: 2;
+                }
+            }
+        }
+    }
+
+    &__image {
+        position: relative;
+        // background-image: url('../assets/images/paintings-full/8full.jpg');
+        background-size: cover;
+        background-position-x: center;
+        background-position-y: center;
+        width: 100%;
+        height: 100%;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.1);
+            transition: 0.5s;
+        }
+    }
+
+    &__answer:hover>&__image::before {
+        opacity: 0;
+    }
+
+    &__next {
+
+        &-container {
+            width: 100%;
+            padding: 0.5rem;
+        }
+    }
+
+    &__progress {
+        border-radius: 50%;
+        background-color: white;
+        height: 1rem;
+        width: 1rem;
+
+        &-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        &-current {
+            border: solid gray 1px;
+        }
+
+        &-right {
+            background-color: $green350;
+            border: solid gray 1px;
+        }
+
+        &-wrong {
+            background-color: darkred;
+            border: solid gray 1px;
+        }
+    }
+
+    &__question {
+        font-size: 2rem;
+        text-align: center;
+    }
+}
