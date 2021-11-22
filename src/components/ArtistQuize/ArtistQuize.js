@@ -138,6 +138,7 @@ export default class ArtistQuize {
           await new QuizeResult().render();
         }));
       }
+      setTimeout(() => { questionRes.show(true); }, 0);
     });
 
     nextContainerElem.append(nextButtonElem);

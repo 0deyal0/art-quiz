@@ -38,12 +38,27 @@ export default class QuestionResult {
     nextButtonElem.classList.add('next-button', 'result-modal__next-button');
     nextButtonElem.innerText = 'Далее';
     nextButtonElem.addEventListener('click', () => {
-      modalOverlayElem.remove();
+      setTimeout(() => { this.show(false); }, 0);
+      setTimeout(() => { modalOverlayElem.remove(); }, 500);
       nextCallback();
     });
 
     modalElem.append(verdictElem, imgContainer, nextButtonElem);
 
+    this.modalOverlayElem = modalOverlayElem;
+
     document.querySelector('body').append(modalOverlayElem);
+  }
+
+  show(isOpen) {
+    if (!this.modalOverlayElem) {
+      return;
+    }
+
+    if (isOpen) {
+      this.modalOverlayElem.classList.add('result-modal__overlay--show');
+    } else {
+      this.modalOverlayElem.classList.remove('result-modal__overlay--show');
+    }
   }
 }

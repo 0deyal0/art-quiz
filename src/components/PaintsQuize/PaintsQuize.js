@@ -130,6 +130,7 @@ export default class PaintsQuize {
 
         paintsQuestionRes.render((async () => { await new QuizeResult().render(); }));
       }
+      setTimeout(() => { paintsQuestionRes.show(true); }, 0);
     });
 
     nextContainerElem.append(nextButtonElem);
